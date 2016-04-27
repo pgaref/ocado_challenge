@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
@@ -68,7 +69,7 @@ public class Main {
 				}
 				if (r.currentLocation.equals(r.destination)){
 					stats.addCompletion();
-					r.destination = new MyPoint(rand.nextInt(grid.getxGridSize()), rand.nextInt(grid.getyGridSize()));
+					r.destination = newDestination(grid, rand);
 				}
 				
 				}
@@ -79,7 +80,9 @@ public class Main {
 
 			//dumbLRouting(grid);
 
-			oeRowsLRouting(grid);
+			//oeRowsLRouting(grid);
+			
+			torusRoutingTwo(grid);
 
 
 			for (Robot r : grid.getGrid()) {
@@ -94,9 +97,6 @@ public class Main {
 						if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation)) {
 							r.blocked = true;
 							break;
-						} else {
-
-							System.out.println("Not blocked: " + r.currentLocation + " --- " + r.nextLocation);
 						}
 					}
 				}
@@ -118,7 +118,6 @@ public class Main {
 					if (o.currentLocation.equals(r.nextLocation) || o.nextLocation.equals(r.nextLocation)) {
 						if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation))
 						{
-							System.out.println("Blocked: " + r.currentLocation + " --- " + r.nextLocation);
 							r.blocked = true;
 							break;
 						}
@@ -127,6 +126,73 @@ public class Main {
 			}
 			
 			frame.repaint();
+		}
+	}
+
+	private static MyPoint newDestination(Grid grid, Random rand) {
+		return new MyPoint(2+rand.nextInt(grid.getxGridSize()-4), 2+rand.nextInt(grid.getyGridSize()-4));
+	}
+
+	private static void torusRoutingTwo(Grid grid) {
+		for (Robot r : grid.getGrid()) {
+			if (Math.abs(r.currentLocation.x - r.destination.x)>1) {
+				r.debugColour = Color.DARK_GRAY;
+				if (r.currentLocation.x > r.destination.x)
+					if (r.currentLocation.y %2 == 1) {
+						r.nextLocation = r.currentLocation.left();
+					} else {
+						validVertical(r);
+					}
+				else
+					if (r.currentLocation.y %2 == 0) {
+						r.nextLocation = r.currentLocation.right();
+					} else {
+						validVertical(r);
+					}
+			} else if (Math.abs(r.currentLocation.y - r.destination.y)>1) {
+				r.debugColour = Color.YELLOW;
+				if (r.currentLocation.y/2 > r.destination.y/2)
+					if (r.currentLocation.x %2 == 1) {
+						r.nextLocation = r.currentLocation.up();
+					} else {
+						validHorizontal(r);
+					}
+				else
+					if (r.currentLocation.x %2 == 0) {
+						r.nextLocation = r.currentLocation.down();
+					} else {
+						validHorizontal(r);
+					}
+			} else {
+				r.debugColour = Color.BLACK;
+				if (r.currentLocation.x != r.destination.x) {
+					if (r.currentLocation.x > r.destination.x)
+						if (r.currentLocation.y %2 == 1) {
+							r.nextLocation = r.currentLocation.left();
+						} else {
+							validVertical(r);
+						}
+					else
+						if (r.currentLocation.y %2 == 0) {
+							r.nextLocation = r.currentLocation.right();
+						} else {
+							validVertical(r);
+						}
+				} else {
+					if (r.currentLocation.y > r.destination.y)
+						if (r.currentLocation.x %2 == 1) {
+							r.nextLocation = r.currentLocation.up();
+						} else {
+							validHorizontal(r);
+						}
+					else
+						if (r.currentLocation.x %2 == 0) {
+							r.nextLocation = r.currentLocation.down();
+						} else {
+							validHorizontal(r);
+						}
+				}
+			}
 		}
 	}
 
