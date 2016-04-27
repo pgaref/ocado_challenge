@@ -26,21 +26,11 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.add(new JPanel() {
-			{
-				{// public JPanel() {
-					setBorder(BorderFactory.createLineBorder(Color.black));
-				}
-			}
-
-			public Dimension getPreferedSize() {
-				return new Dimension(250, 250);
-			}
+			
 
 			public void paintComponent(Graphics g) {
 				super.paintComponents(g);
 				for (int i = 0; i <= grid.getxGridSize(); i++) {
-					// if (i%0 == 1) g.drawRect(0+i*res, 0, 0+(i+1)*res,
-					// ny*res);
 					g.drawLine(0 + i * grid.getGridResolution(), 0, 0 + i * grid.getGridResolution(), grid.getyGridSize() * grid.getGridResolution());
 				}
 				for (int i = 0; i <= grid.getyGridSize(); i++) {
