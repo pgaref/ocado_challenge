@@ -1,17 +1,13 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import Utils.MyPoint;
 import navigation.Grid;
 import navigation.Robot;
+import view.GridViewPanel;
 
 public class Main {
 
@@ -25,39 +21,7 @@ public class Main {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.add(new JPanel() {
-			{
-				{// public JPanel() {
-					setBorder(BorderFactory.createLineBorder(Color.black));
-				}
-			}
-
-			public Dimension getPreferedSize() {
-				return new Dimension(350, 350);
-			}
-
-			public void paintComponent(Graphics g) {
-				super.paintComponents(g);
-				for (int i = 0; i <= grid.getxGridSize(); i++) {
-					g.drawLine(0 + i * grid.getGridResolution(), 0, 0 + i * grid.getGridResolution(), grid.getyGridSize() * grid.getGridResolution());
-				}
-				for (int i = 0; i <= grid.getyGridSize(); i++) {
-					g.drawLine(0, 0 + i * grid.getGridResolution(), grid.getxGridSize() * grid.getGridResolution(), 0 + i * grid.getGridResolution());
-				}
-
-				for (Robot o : grid.getGrid()) {
-
-					if (o.currentLocation.x == o.destination.x && o.currentLocation.y == o.destination.y)
-						g.setColor(Color.green);
-					else if (o.blocked)
-						g.setColor(Color.red);
-					else
-						g.setColor(Color.blue);
-
-					g.fillRect(o.currentLocation.x * grid.getGridResolution() + 1, o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1, grid.getGridResolution() - 1);
-				}
-			}
-		});
+		frame.add(new GridViewPanel(grid));
 		
 		frame.setVisible(true);
 		frame.pack();
