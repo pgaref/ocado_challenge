@@ -1,15 +1,11 @@
 package navigation;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-
 import Utils.MyPoint;
 
-public class Grid extends JPanel{
+public class Grid {
 
 	private int xGridSize = 100;
 	private int yGridSize = 50;
@@ -19,7 +15,6 @@ public class Grid extends JPanel{
 
 	public Grid(int nrobots){
 		this.num_robots = nrobots;
-		setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	public void initGrid() {
@@ -112,8 +107,5 @@ public class Grid extends JPanel{
 	public void setGridResolution(int gridResolution) {
 		this.gridResolution = gridResolution;
 	}
-	
-	
-	
 
 }

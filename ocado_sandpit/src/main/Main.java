@@ -26,7 +26,15 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.add(new JPanel() {
-			
+			{
+				{// public JPanel() {
+					setBorder(BorderFactory.createLineBorder(Color.black));
+				}
+			}
+
+			public Dimension getPreferedSize() {
+				return new Dimension(350, 350);
+			}
 
 			public void paintComponent(Graphics g) {
 				super.paintComponents(g);
