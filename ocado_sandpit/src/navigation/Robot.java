@@ -7,6 +7,7 @@ public class Robot {
 	public MyPoint currentLocation;
 	public MyPoint nextLocation; 
 	public MyPoint destination;
+	public boolean goal;
 	
 	public Robot(MyPoint loc, MyPoint dest) {
 		this.currentLocation = loc;

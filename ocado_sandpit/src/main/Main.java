@@ -31,13 +31,16 @@ public class Main {
 			Thread.sleep(500);
 
 			for (Robot r : grid.getGrid()) {
-
+				
+				r.goal = false;
+				
 				if (r.blocked)
 					continue;
 				else
 					r.currentLocation = r.nextLocation;
 
-				if (r.currentLocation.equals(r.destination))
+				if (r.currentLocation.equals(r.destination)) {
+					r.goal = true;
 					r.destination = new MyPoint(rand.nextInt(grid.getxGridSize()), rand.nextInt(grid.getyGridSize()));
 
 			}

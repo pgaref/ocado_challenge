@@ -58,10 +58,10 @@ public class GridViewPanel extends JPanel {
 
 		for (Robot o : grid.getGrid()) {
 
-			if (o.currentLocation.x == o.destination.x && o.currentLocation.y == o.destination.y)
-				g.setColor(Color.green);
-			else if (o.blocked)
+			if (o.blocked)
 				g.setColor(Color.red);
+			else if (o.goal)
+				g.setColor(Color.cyan);
 			else
 				g.setColor(Color.blue);
 
