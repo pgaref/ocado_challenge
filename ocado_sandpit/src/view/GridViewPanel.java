@@ -31,10 +31,27 @@ public class GridViewPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
 		for (int i = 0; i <= grid.getxGridSize(); i++) {
+			if (i%2==1){
+				g.setColor(new Color(192,192,192,255));
+				g.fillRect(0 + i * grid.getGridResolution() + 1 + 1*2, 0,
+						   grid.getGridResolution() - 1 - 2*2, grid.getyGridSize() * grid.getGridResolution());
+			}
+		}
+		for (int i = 0; i <= grid.getyGridSize(); i++) {
+			if (i%2==1){
+				g.setColor(new Color(192,192,192,255));
+				g.fillRect(0, 0 + i * grid.getGridResolution() + 1 + 1*2,
+						   grid.getxGridSize() * grid.getGridResolution(),  grid.getGridResolution() - 1 - 2*2);
+			}
+		}
+		for (int i = 0; i <= grid.getxGridSize(); i++) {
+			g.setColor(new Color(0,0,0,255));
+			
 			g.drawLine(0 + i * grid.getGridResolution(), 0, 0 + i * grid.getGridResolution(),
 					grid.getyGridSize() * grid.getGridResolution());
 		}
 		for (int i = 0; i <= grid.getyGridSize(); i++) {
+			g.setColor(new Color(0,0,0,255));
 			g.drawLine(0, 0 + i * grid.getGridResolution(), grid.getxGridSize() * grid.getGridResolution(),
 					0 + i * grid.getGridResolution());
 		}
