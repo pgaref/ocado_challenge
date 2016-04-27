@@ -12,7 +12,7 @@ import Utils.MyPoint;
 import Utils.Statistics;
 import navigation.Grid;
 import navigation.Robot;
-import strategies.RoutingStrategy;
+import strategies.IRoutingStrategy;
 import strategies.TorusRouting2;
 import view.GridViewPanel;
 import view.StatsPanel;
@@ -22,14 +22,15 @@ public class Main {
 
 	static int PANEL_COUNT = 2;
 	static Statistics stats = new Statistics();
+	private static int CYCLE_SLEEP_TIME = 10;
 
-	static int total_robots = 500/20;
+	static int total_robots = 5000/20;
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid grid = new Grid(total_robots);
 		grid.initGrid();
 
-		RoutingStrategy strategy = new TorusRouting2();
+		IRoutingStrategy strategy = new TorusRouting2();
 		
 		
 		JFrame frame = new JFrame();
@@ -69,7 +70,7 @@ public class Main {
 
 		Random rand = new Random();
 		while (true) {
-			Thread.sleep(10);
+			Thread.sleep(CYCLE_SLEEP_TIME);
 
 			for (Robot r : grid.getGrid()) {
 

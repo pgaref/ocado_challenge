@@ -92,6 +92,7 @@ public class TimeSeriesChart extends JPanel{
 
         ValueAxis yaxis = plot.getRangeAxis();
         yaxis.setRange(0.0, 50.0);
+        yaxis.setAutoRange(true);
 
         return result;
     }

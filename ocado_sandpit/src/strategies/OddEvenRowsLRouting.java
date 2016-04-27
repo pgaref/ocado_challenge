@@ -3,7 +3,7 @@ package strategies;
 import navigation.Grid;
 import navigation.Robot;
 
-public class OERowsLRouting extends DumbLRouting {
+public class OddEvenRowsLRouting extends DumbLRouting {
 
 	@Override
 	public void route(Grid grid) {
@@ -49,9 +49,6 @@ public class OERowsLRouting extends DumbLRouting {
 					if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation)) {
 						r.blocked = true;
 						break;
-					} else {
-
-						System.out.println("Not blocked: " + r.currentLocation + " --- " + r.nextLocation);
 					}
 				}
 			}
@@ -73,12 +70,25 @@ public class OERowsLRouting extends DumbLRouting {
 				if (o.currentLocation.equals(r.nextLocation) || o.nextLocation.equals(r.nextLocation)) {
 					if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation))
 					{
-						System.out.println("Blocked: " + r.currentLocation + " --- " + r.nextLocation);
 						r.blocked = true;
 						break;
 					}
 				}
 			}
 		}
+	}
+
+	protected void validVertical(Robot r) {
+		if (r.currentLocation.x %2 == 1)
+			r.nextLocation = r.currentLocation.up();
+		else
+			r.nextLocation = r.currentLocation.down();
+	}
+
+	protected void validHorizontal(Robot r) {
+		if (r.currentLocation.y %2 == 1)
+			r.nextLocation = r.currentLocation.left();
+		else
+			r.nextLocation = r.currentLocation.right();
 	}
 }

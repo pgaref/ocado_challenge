@@ -9,7 +9,7 @@ public class Grid {
 
 	private int xGridSize = 100;
 	private int yGridSize = 50;
-	private int gridResolution = 12;
+	private int gridResolution = 8;
 	private int num_robots;
 	private ArrayList<Robot> grid = new ArrayList<Robot>();
 

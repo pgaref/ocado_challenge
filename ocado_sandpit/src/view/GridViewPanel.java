@@ -17,7 +17,9 @@ public class GridViewPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Grid grid;
-
+	private boolean debugModeActive = false;
+	private boolean coloursActive = false;
+	
 	public GridViewPanel(Grid grid) {
 		this.grid = grid;
 		setBorder(BorderFactory.createLineBorder(Color.black));
@@ -53,22 +55,19 @@ public class GridViewPanel extends JPanel {
 		}
 
 		for (Robot o : grid.getGrid()) {
-
-			boolean debug = false;
-			boolean colours = false;
 			
 			if (o.blocked)
 				g.setColor(Color.red);
 			else if (o.goal)
 				g.setColor(Color.cyan);
-			else if (colours)
+			else if (coloursActive)
 				g.setColor(o.color);
 			else
 				g.setColor(Color.blue);
 			
 			
 			
-			if (debug) {
+			if (debugModeActive) {
 				if (o.debugColour != null)
 					g.setColor(o.debugColour);
 			}
@@ -78,7 +77,7 @@ public class GridViewPanel extends JPanel {
 					o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1,
 					grid.getGridResolution() - 1);
 			
-			if (debug) {
+			if (debugModeActive) {
 				g.setColor(Color.MAGENTA);
 				g.drawLine(o.currentLocation.x * grid.getGridResolution(),o.currentLocation.y * grid.getGridResolution(),o.destination.x * grid.getGridResolution(),o.destination.y * grid.getGridResolution());
 				g.fillRect(o.destination.x * grid.getGridResolution() + 1, o.destination.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1, grid.getGridResolution() - 1);
@@ -87,5 +86,21 @@ public class GridViewPanel extends JPanel {
 		
 		
 		
+	}
+
+	public boolean isDebugModeActive() {
+		return debugModeActive;
+	}
+
+	public void setDebugModeActive(boolean debugModeActive) {
+		this.debugModeActive = debugModeActive;
+	}
+
+	public boolean isColoursActive() {
+		return coloursActive;
+	}
+
+	public void setColoursActive(boolean coloursActive) {
+		this.coloursActive = coloursActive;
 	}
 }
