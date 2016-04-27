@@ -65,5 +65,6 @@ public class GridViewPanel extends JPanel {
 					o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1,
 					grid.getGridResolution() - 1);
 		}
+		
 	}
 }

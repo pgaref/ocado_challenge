@@ -8,6 +8,7 @@ public class Robot {
 	public MyPoint nextLocation; 
 	public MyPoint destination;
 	public boolean goal;
+	public boolean was_blocked;
 	
 	public Robot(MyPoint loc, MyPoint dest) {
 		this.currentLocation = loc;
