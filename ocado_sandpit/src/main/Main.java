@@ -1,10 +1,7 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -13,6 +10,8 @@ import Utils.MyPoint;
 import Utils.Statistics;
 import navigation.Grid;
 import navigation.Robot;
+import strategies.RoutingStrategy;
+import strategies.TorusRouting2;
 import view.GridViewPanel;
 import view.LinePlotPanel;
 
@@ -21,11 +20,14 @@ public class Main {
 	static int PANEL_COUNT = 2;
 	static Statistics stats = new Statistics();
 	
-	static int total_robots = 5000/20;
+	static int total_robots = 500/20;
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid grid = new Grid(total_robots);
 		grid.initGrid();
+		
+		RoutingStrategy strategy = new TorusRouting2();
+		
 		
 		JFrame frame = new JFrame();
 		frame.setTitle("Ocado Challenge - Sandpit 2016");
@@ -43,10 +45,8 @@ public class Main {
 		gbc.weighty = 0;
 		gbc.fill = GridBagConstraints.BOTH;
 		frame.add(new LinePlotPanel(stats), gbc);
+		
 		frame.setSize(820, 650);
-		
-		
-		
 		frame.setVisible(true);
 		
 		Random rand = new Random();
@@ -76,54 +76,7 @@ public class Main {
 
 			}
 			
-			
-
-			//dumbLRouting(grid);
-
-			//oeRowsLRouting(grid);
-			
-			torusRoutingTwo(grid);
-
-
-			for (Robot r : grid.getGrid()) {
-				r.was_blocked = r.blocked;
-			}
-
-			for (Robot r : grid.getGrid()) {
-				r.blocked = false;
-				for (Robot o : grid.getGrid()) {
-					if (r == o) continue;
-					if (o.currentLocation.equals(r.nextLocation) || o.nextLocation.equals(r.nextLocation)) {
-						if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation)) {
-							r.blocked = true;
-							break;
-						}
-					}
-				}
-			}
-			
-			for (Robot r : grid.getGrid()) {
-				if (r.blocked && r.was_blocked) {
-					if (r.nextLocation.x == r.currentLocation.x)
-						validHorizontal(r);
-					else
-						validVertical(r);
-				}
-			}
-			
-			for (Robot r : grid.getGrid()) {
-				r.blocked = false;
-				for (Robot o : grid.getGrid()) {
-					if (r == o) continue;
-					if (o.currentLocation.equals(r.nextLocation) || o.nextLocation.equals(r.nextLocation)) {
-						if (r.nextLocation.y != r.currentLocation.y || r.nextLocation.equals(o.currentLocation))
-						{
-							r.blocked = true;
-							break;
-						}
-					}
-				}
-			}
+			strategy.route(grid);
 			
 			frame.repaint();
 		}
@@ -133,131 +86,4 @@ public class Main {
 		return new MyPoint(2+rand.nextInt(grid.getxGridSize()-4), 2+rand.nextInt(grid.getyGridSize()-4));
 	}
 
-	private static void torusRoutingTwo(Grid grid) {
-		for (Robot r : grid.getGrid()) {
-			if (Math.abs(r.currentLocation.x - r.destination.x)>1) {
-				r.debugColour = Color.DARK_GRAY;
-				if (r.currentLocation.x > r.destination.x)
-					if (r.currentLocation.y %2 == 1) {
-						r.nextLocation = r.currentLocation.left();
-					} else {
-						validVertical(r);
-					}
-				else
-					if (r.currentLocation.y %2 == 0) {
-						r.nextLocation = r.currentLocation.right();
-					} else {
-						validVertical(r);
-					}
-			} else if (Math.abs(r.currentLocation.y - r.destination.y)>1) {
-				r.debugColour = Color.YELLOW;
-				if (r.currentLocation.y/2 > r.destination.y/2)
-					if (r.currentLocation.x %2 == 1) {
-						r.nextLocation = r.currentLocation.up();
-					} else {
-						validHorizontal(r);
-					}
-				else
-					if (r.currentLocation.x %2 == 0) {
-						r.nextLocation = r.currentLocation.down();
-					} else {
-						validHorizontal(r);
-					}
-			} else {
-				r.debugColour = Color.BLACK;
-				if (r.currentLocation.x != r.destination.x) {
-					if (r.currentLocation.x > r.destination.x)
-						if (r.currentLocation.y %2 == 1) {
-							r.nextLocation = r.currentLocation.left();
-						} else {
-							validVertical(r);
-						}
-					else
-						if (r.currentLocation.y %2 == 0) {
-							r.nextLocation = r.currentLocation.right();
-						} else {
-							validVertical(r);
-						}
-				} else {
-					if (r.currentLocation.y > r.destination.y)
-						if (r.currentLocation.x %2 == 1) {
-							r.nextLocation = r.currentLocation.up();
-						} else {
-							validHorizontal(r);
-						}
-					else
-						if (r.currentLocation.x %2 == 0) {
-							r.nextLocation = r.currentLocation.down();
-						} else {
-							validHorizontal(r);
-						}
-				}
-			}
-		}
-	}
-
-	private static void oeRowsLRouting(Grid grid) {
-		for (Robot r : grid.getGrid()) {
-			if (r.currentLocation.x != r.destination.x) {
-				if (r.currentLocation.x > r.destination.x)
-					if (r.currentLocation.y %2 == 1) {
-						r.nextLocation = r.currentLocation.left();
-					} else {
-						validVertical(r);
-					}
-				else
-					if (r.currentLocation.y %2 == 0) {
-						r.nextLocation = r.currentLocation.right();
-					} else {
-						validVertical(r);
-					}
-			} else {
-				if (r.currentLocation.y > r.destination.y)
-					if (r.currentLocation.x %2 == 1) {
-						r.nextLocation = r.currentLocation.up();
-					} else {
-						validHorizontal(r);
-					}
-				else
-					if (r.currentLocation.x %2 == 0) {
-						r.nextLocation = r.currentLocation.down();
-					} else {
-						validHorizontal(r);
-					}
-			}
-		}
-	}
-
-	private static void validVertical(Robot r) {
-		if (r.currentLocation.x %2 == 1)
-			r.nextLocation = r.currentLocation.up();
-		else
-			r.nextLocation = r.currentLocation.down();
-	}
-
-	private static void validHorizontal(Robot r) {
-		if (r.currentLocation.y %2 == 1)
-			r.nextLocation = r.currentLocation.left();
-		else
-			r.nextLocation = r.currentLocation.right();
-	}
-
-	private static void dumbLRouting(Grid grid) {
-		for (Robot r : grid.getGrid()) {
-			if (r.currentLocation.x != r.destination.x) {
-				if (r.currentLocation.x > r.destination.x)
-					r.nextLocation = r.currentLocation.left();
-				else
-					r.nextLocation = r.currentLocation.right();
-				r.nextLocation.y = r.currentLocation.y;
-			} else {
-				if (r.currentLocation.y > r.destination.y)
-					r.nextLocation = r.currentLocation.up();
-				else
-					r.nextLocation = r.currentLocation.down();
-				r.nextLocation.x = r.currentLocation.x;
-			}
-		}
-		
-	}
 }
