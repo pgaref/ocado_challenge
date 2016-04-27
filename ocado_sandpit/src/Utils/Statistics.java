@@ -1,80 +1,82 @@
 package Utils;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.List;
 
-import view.LinePlotPanel;
-
-public class Statistics extends JPanel{
-
+public class Statistics {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private int collisions = 0;
-	private int completions = 0;
+	public ArrayList<Integer> collisions;
+	public ArrayList<Integer> completions;
 	private long startTime;
-	private JLabel tf = null;
-	
-	public Statistics(){
-		tf = new JLabel("Collisions: "+ this.collisions + "\n Completions: "+ this.completions);
-		this.add(tf);
+
+	public Statistics() {
 		startTime = System.currentTimeMillis();
+		collisions = new ArrayList<Integer>();
+		completions = new ArrayList<Integer>();
 	}
 
-	
-	public void addCollision(){
-		this.collisions+=1;
-		LinePlotPanel.collisions.add(100);
-		repaint();
-	}
-	
-	public void addCompletion(){
-		this.completions+=1;
-		LinePlotPanel.completions.add(100);
-		LinePlotPanel.throughput.add((double)((double)this.completions/(double)((System.currentTimeMillis()-this.startTime)/1000)));
-		repaint();
-	}
-
-	@Override
-	public void repaint(){
-		if(tf == null)
-			tf = new JLabel("Collisions: "+ this.collisions + "\n Completions: "+ this.completions);
-		else
-			this.tf.setText("Collisions: "+ this.collisions + "\n Completions: "+ this.completions);
-	}
-	
 	/**
 	 * @return the collisions
 	 */
-	public int getCollisions() {
+	public ArrayList<Integer> getCollisions() {
 		return collisions;
 	}
 
-
 	/**
-	 * @param collisions the collisions to set
+	 * @param collisions
+	 *            the collisions to set
 	 */
-	public void setCollisions(int collisions) {
+	public void setCollisions(ArrayList<Integer> collisions) {
 		this.collisions = collisions;
 	}
-
 
 	/**
 	 * @return the completions
 	 */
-	public int getCompletions() {
+	public ArrayList<Integer> getCompletions() {
 		return completions;
 	}
 
-
 	/**
-	 * @param completions the completions to set
+	 * @param completions
+	 *            the completions to set
 	 */
-	public void setCompletions(int completions) {
+	public void setCompletions(ArrayList<Integer> completions) {
 		this.completions = completions;
 	}
+
+	/**
+	 * @return the throughput
+	 */
+	public Double getAverageThroughput() {
+		return this.average(this.completions);
+	}
 	
+	public Double getCompletionSum(){
+		return this.sum(this.completions);
+	}
 	
+	public Double getCollistionSum(){
+		return this.sum(this.collisions);
+	}
+
+	private Double sum(List<Integer> values){
+		double sum = 0.0;
+		for (int i = 0; i < values.size(); i++) {
+			sum += values.get(i);
+		}
+		return sum;
+	}
 	
+	private Double average(List<Integer> values) {
+		double average = 0.0;
+		for (int i = 0; i < values.size(); i++) {
+			average += values.get(i);
+		}
+		return average / values.size();
+	}
+
 }
