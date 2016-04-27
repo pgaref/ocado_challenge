@@ -23,7 +23,7 @@ public class Grid {
 		for (int i = 0; i < num_robots; i++) {
 			while (true) {
 				boolean colide = false;
-				MyPoint p = new MyPoint(rand.nextInt(this.xGridSize), rand.nextInt(this.yGridSize));
+				MyPoint p = new MyPoint(2+rand.nextInt(this.xGridSize-4), 2+rand.nextInt(this.yGridSize-4));
 				for (Robot o : grid){
 					if (o.currentLocation.equals(p)) {
 						colide = true;
@@ -31,7 +31,8 @@ public class Grid {
 					}
 				}
 				if(!colide){
-					grid.add(new Robot(p, new MyPoint(rand.nextInt(this.xGridSize), rand.nextInt(this.yGridSize))));
+					//p = new MyPoint(this.xGridSize/2, this.yGridSize-1);
+					grid.add(new Robot(p, new MyPoint(2+rand.nextInt(this.xGridSize-4), 2+rand.nextInt(this.yGridSize-4))));
 					break;
 				}
 			}

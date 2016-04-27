@@ -54,16 +54,38 @@ public class GridViewPanel extends JPanel {
 
 		for (Robot o : grid.getGrid()) {
 
+			boolean debug = false;
+			boolean colours = false;
+			
 			if (o.blocked)
 				g.setColor(Color.red);
 			else if (o.goal)
 				g.setColor(Color.cyan);
+			else if (colours)
+				g.setColor(o.color);
 			else
 				g.setColor(Color.blue);
+			
+			
+			
+			if (debug) {
+				if (o.debugColour != null)
+					g.setColor(o.debugColour);
+			}
 
+	
 			g.fillRect(o.currentLocation.x * grid.getGridResolution() + 1,
 					o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1,
 					grid.getGridResolution() - 1);
+			
+			if (debug) {
+				g.setColor(Color.MAGENTA);
+				g.drawLine(o.currentLocation.x * grid.getGridResolution(),o.currentLocation.y * grid.getGridResolution(),o.destination.x * grid.getGridResolution(),o.destination.y * grid.getGridResolution());
+				g.fillRect(o.destination.x * grid.getGridResolution() + 1, o.destination.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1, grid.getGridResolution() - 1);
+			}
 		}
+		
+		
+		
 	}
 }

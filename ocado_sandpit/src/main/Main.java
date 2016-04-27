@@ -12,23 +12,30 @@ import Utils.MyPoint;
 import Utils.Statistics;
 import navigation.Grid;
 import navigation.Robot;
+import strategies.RoutingStrategy;
+import strategies.TorusRouting2;
 import view.GridViewPanel;
 import view.StatsPanel;
 import view.TimeSeriesChart;
 
 public class Main {
 
-	static int total_robots = 20;
 	static int PANEL_COUNT = 2;
 	static Statistics stats = new Statistics();
+
+	static int total_robots = 500/20;
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid grid = new Grid(total_robots);
 		grid.initGrid();
 
+		RoutingStrategy strategy = new TorusRouting2();
+		
+		
 		JFrame frame = new JFrame();
 		frame.setTitle("Ocado Challenge - Sandpit 2016");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		frame.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -62,7 +69,7 @@ public class Main {
 
 		Random rand = new Random();
 		while (true) {
-			Thread.sleep(100);
+			Thread.sleep(10);
 
 			for (Robot r : grid.getGrid()) {
 
@@ -76,8 +83,7 @@ public class Main {
 					if (r.currentLocation.equals(r.destination)) {
 						currentCompletions += 1;
 						r.goal = true;
-						r.destination = new MyPoint(rand.nextInt(grid.getxGridSize()),
-								rand.nextInt(grid.getyGridSize()));
+						r.destination = newDestination(grid, rand);
 					}
 				}
 				
@@ -101,43 +107,15 @@ public class Main {
 
 			}
 
-			dumbLRouting(grid);
-
-			for (Robot r : grid.getGrid()) {
-				r.blocked = false;
-				for (Robot o : grid.getGrid()) {
-					if (r == o)
-						continue;
-					if (o.currentLocation.equals(r.nextLocation) || o.nextLocation.equals(r.nextLocation)) {
-						if (r.nextLocation.x == r.currentLocation.x) {
-							r.blocked = true;
-							break;
-						}
-					}
-				}
-			}
-
+			
+			strategy.route(grid);
+			
 			frame.repaint();
 		}
-	}
-
-	private static void dumbLRouting(Grid grid) {
-		for (Robot r : grid.getGrid()) {
-			if (r.currentLocation.x != r.destination.x) {
-				if (r.currentLocation.x > r.destination.x)
-					r.nextLocation = r.currentLocation.left();
-				else
-					r.nextLocation = r.currentLocation.right();
-				r.nextLocation.y = r.currentLocation.y;
-			} else {
-				if (r.currentLocation.y > r.destination.y)
-					r.nextLocation = r.currentLocation.up();
-				else
-					r.nextLocation = r.currentLocation.down();
-				r.nextLocation.x = r.currentLocation.x;
-			}
-		}
-
+	}	
+	
+	private static MyPoint newDestination(Grid grid, Random rand) {
+		return new MyPoint(2+rand.nextInt(grid.getxGridSize()-4), 2+rand.nextInt(grid.getyGridSize()-4));
 	}
 
 }
