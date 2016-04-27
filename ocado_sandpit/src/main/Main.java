@@ -2,9 +2,14 @@ package main;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jfree.data.time.Millisecond;
 
@@ -24,20 +29,28 @@ public class Main {
 	static Statistics stats = new Statistics();
 	private static int CYCLE_SLEEP_TIME = 10;
 
-	static int total_robots = 5000/20;
+	static int total_robots = 5000 / 20;
+	private static StatsPanel sPanel;
 
 	public static void main(String[] args) throws InterruptedException {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
 		Grid grid = new Grid(total_robots);
 		grid.initGrid();
 
 		IRoutingStrategy strategy = new TorusRouting2();
-		
-		
+
 		JFrame frame = new JFrame();
 		frame.setTitle("Ocado Challenge - Sandpit 2016");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		frame.getContentPane().setLayout(new GridBagLayout());
+		final GridViewPanel gridPanel = new GridViewPanel(grid);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -45,22 +58,34 @@ public class Main {
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.BOTH;
-		frame.add(new GridViewPanel(grid), gbc);
+		frame.add(gridPanel, gbc);
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0;
 		gbc.weighty = 0;
 		gbc.fill = GridBagConstraints.BOTH;
-		
-		StatsPanel spanel = new StatsPanel(stats);
-		frame.add(spanel, gbc);
-		
+
+		sPanel = new StatsPanel(stats);
+		sPanel.addDestinationCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setDebugModeActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
+		sPanel.addColoursCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setColoursActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
+		frame.add(sPanel, gbc);
+
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 0;
 		TimeSeriesChart throughputChart = new TimeSeriesChart();
-		frame.add(throughputChart.initTimeSeriesChart("Average Throughput") , gbc);
+		frame.add(throughputChart.initTimeSeriesChart("Average Throughput"), gbc);
 		frame.setSize(820, 650);
 		frame.setVisible(true);
 
@@ -87,36 +112,37 @@ public class Main {
 						r.destination = newDestination(grid, rand);
 					}
 				}
-				
+
 				/*
 				 * Update stats every seconds
 				 */
-				if(System.currentTimeMillis() - timer > 1000){
-					
+				if (System.currentTimeMillis() - timer > 1000) {
+
 					stats.getCollisions().add(currentCollisions);
 					stats.getCompletions().add(currentCompletions);
-					
+
 					final Millisecond now = new Millisecond();
 					throughputChart.getSeries().add(now, stats.getAverageThroughput());
-					System.out.println("Avg Thr: "+ stats.getAverageThroughput() + " Completions: "+ stats.getCompletionSum() +" Collisions: "+stats.getCollistionSum());
-					
+					System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
+							+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum());
+
 					currentCollisions = 0;
 					currentCompletions = 0;
-					timer=System.currentTimeMillis();
+					timer = System.currentTimeMillis();
+
+					sPanel.updateStats();
 				}
-				
 
 			}
 
-			
 			strategy.route(grid);
-			
+
 			frame.repaint();
 		}
-	}	
-	
+	}
+
 	private static MyPoint newDestination(Grid grid, Random rand) {
-		return new MyPoint(2+rand.nextInt(grid.getxGridSize()-4), 2+rand.nextInt(grid.getyGridSize()-4));
+		return new MyPoint(2 + rand.nextInt(grid.getxGridSize() - 4), 2 + rand.nextInt(grid.getyGridSize() - 4));
 	}
 
 }
