@@ -23,10 +23,6 @@ public class GridViewPanel extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
-	public Dimension getPreferedSize() {
-		return new Dimension(350, 350);
-	}
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
