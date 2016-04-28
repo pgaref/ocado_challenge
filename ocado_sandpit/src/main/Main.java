@@ -29,17 +29,16 @@ public class Main {
 	static Statistics stats = new Statistics();
 	private static int CYCLE_SLEEP_TIME = 10;
 	
-	static int total_robots;
-	
 	/** Ocado default density: 1.0/20 **/
 	static double robot_density = 1.0 / 20;
 	
-
 	private static StatsPanel sPanel;
 
 	static boolean loop = true;
 	static int iterations = 10000000;
 	static boolean print = true;
+	static Grid grid = null;
+	
 
 	public static void main(String[] args) throws InterruptedException {
 		try {
@@ -50,12 +49,10 @@ public class Main {
 		}
 
 		stats = new Statistics();
-		
-		Grid grid = new Grid(robot_density);
-		grid.initGrid();
+		grid = new Grid(robot_density); grid.initGrid();
 
 		IRoutingStrategy strategy = new TorusRouting2();
-
+		
 		JFrame frame = new JFrame();
 		frame.setTitle("Ocado Challenge - Sandpit 2016");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -183,11 +180,8 @@ public class Main {
 	public static void stats_collect(String[] args, int robots, int time, int iterations) throws InterruptedException {
 		CYCLE_SLEEP_TIME = time;
 		loop = false;
-		total_robots = robots;
 		Main.iterations = iterations;
-		
 		print = false;
-
 		main(args);
 		getStats();
 	}
@@ -199,7 +193,7 @@ public class Main {
 
 	public static  void getStats(){
 		System.out.println("===================================================================");
-		System.out.println("Robots: " + total_robots);
+		System.out.println("Robots: " + grid.getNum_robots() );
 		System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
 				+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
 				+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
