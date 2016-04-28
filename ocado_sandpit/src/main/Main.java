@@ -23,8 +23,8 @@ public class Main {
 	static int PANEL_COUNT = 2;
 	static Statistics stats = new Statistics();
 	private static int CYCLE_SLEEP_TIME = 10;
-
-	static int total_robots = 5000/20;
+	
+	static int total_robots = 5000/20*4 ;
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid grid = new Grid(total_robots);

@@ -55,6 +55,7 @@ public class GridViewPanel extends JPanel {
 		}
 
 		for (Robot o : grid.getGrid()) {
+
 			
 			if (o.blocked)
 				g.setColor(Color.red);
