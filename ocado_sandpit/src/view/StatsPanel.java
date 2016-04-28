@@ -37,6 +37,7 @@ public class StatsPanel extends JPanel {
 	private JCheckBox destinationCheckBox;
 	private JCheckBox simpleDestinationCheckBox;
 	private JCheckBox coloursCheckBox;
+	private JCheckBox thingCheckBox;
 
 	public StatsPanel(Statistics s) {
 		this.stats = s;
@@ -75,6 +76,15 @@ public class StatsPanel extends JPanel {
 		gbc.gridwidth = 2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		add(simpleDestinationCheckBox, gbc);
+
+		thingCheckBox = new JCheckBox("Magenta");
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.gridx = 0;
+		gbc.gridy = currentY++;
+		gbc.gridwidth = 2;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(thingCheckBox, gbc);
 
 		coloursCheckBox = new JCheckBox("Show Colours");
 		gbc.gridx = 0;
@@ -169,9 +179,13 @@ public class StatsPanel extends JPanel {
 	public void addSimpleDestinationCheckBoxListener(ActionListener al) {
 		simpleDestinationCheckBox.addActionListener(al);
 	}
-	
-public void addColoursCheckBoxListener(ActionListener al) {
+
+	public void addColoursCheckBoxListener(ActionListener al) {
 		coloursCheckBox.addActionListener(al);
+	}
+
+	public void addThingCheckBoxListener(ActionListener al) {
+		thingCheckBox.addActionListener(al);
 	}
 	
 	public void updateStats() {

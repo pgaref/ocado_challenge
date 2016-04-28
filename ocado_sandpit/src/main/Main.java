@@ -105,6 +105,12 @@ public class Main {
 				gridPanel.setColoursActive(((JCheckBox) e.getSource()).isSelected());
 			}
 		});
+		sPanel.addThingCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setThingActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
 		frame.add(sPanel, gbc);
 
 		gbc.gridx = 1;

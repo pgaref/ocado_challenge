@@ -18,6 +18,7 @@ public class GridViewPanel extends JPanel {
 	private Grid grid;
 	private boolean simpleDebugModeActive = false;
 	private boolean debugModeActive = false;
+	private boolean thingActive = false;
 	private boolean coloursActive = false;
 	
 	public GridViewPanel(Grid grid) {
@@ -79,7 +80,7 @@ public class GridViewPanel extends JPanel {
 					o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1,
 					grid.getGridResolution() - 1);
 			
-			if (debugModeActive || (simpleDebugModeActive&&first)) {
+			if ((debugModeActive || (simpleDebugModeActive&&first) ) && thingActive) {
 				g.setColor(Color.MAGENTA);
 				g.drawLine(o.currentLocation.x * grid.getGridResolution(),o.currentLocation.y * grid.getGridResolution(),o.destination.x * grid.getGridResolution(),o.destination.y * grid.getGridResolution());
 				g.fillRect(o.destination.x * grid.getGridResolution() + 1, o.destination.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1, grid.getGridResolution() - 1);
@@ -115,4 +116,13 @@ public class GridViewPanel extends JPanel {
 	public void setColoursActive(boolean coloursActive) {
 		this.coloursActive = coloursActive;
 	}
+
+	public boolean isThingActive() {
+		return thingActive;
+	}
+
+	public void setThingActive(boolean thingActive) {
+		this.thingActive = thingActive;
+	}
+
 }
