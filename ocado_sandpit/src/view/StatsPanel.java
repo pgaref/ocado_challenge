@@ -32,6 +32,8 @@ public class StatsPanel extends JPanel {
 	private JLabel completionsLabel;
 	private JLabel collisionsLabel;
 	private JLabel throughputLabel;
+	private JLabel avgStepsLabel;
+	private JLabel overheadLabel;
 	private JCheckBox destinationCheckBox;
 	private JCheckBox coloursCheckBox;
 
@@ -120,6 +122,34 @@ public class StatsPanel extends JPanel {
 		gbc.gridwidth = 1;
 		gbc.fill = GridBagConstraints.NONE;
 		add(throughputLabel, gbc);
+
+		JLabel avgStepsDescLabel = new JLabel("Avg Steps: ", JLabel.LEFT);
+		gbc.gridx = 0;
+		gbc.gridy = currentY;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.NONE;
+		add(avgStepsDescLabel, gbc);
+		
+		avgStepsLabel = new JLabel("", JLabel.LEFT);
+		gbc.gridx = 1;
+		gbc.gridy = currentY++;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.NONE;
+		add(avgStepsLabel, gbc);
+
+		JLabel overheadDescLabel = new JLabel("Overhead: ", JLabel.LEFT);
+		gbc.gridx = 0;
+		gbc.gridy = currentY;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.NONE;
+		add(overheadDescLabel, gbc);
+		
+		overheadLabel = new JLabel("", JLabel.LEFT);
+		gbc.gridx = 1;
+		gbc.gridy = currentY++;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.NONE;
+		add(overheadLabel, gbc);
 	}
 
 	public void addDestinationCheckBoxListener(ActionListener al) {
@@ -134,6 +164,8 @@ public void addColoursCheckBoxListener(ActionListener al) {
 		completionsLabel.setText(Integer.toString(stats.getCompletionSum()));
 		collisionsLabel.setText(Integer.toString(stats.getCollistionSum()));
 		throughputLabel.setText(NUMBER_FORMAT.format(stats.getAverageThroughput()));
+		avgStepsLabel.setText(NUMBER_FORMAT.format(stats.getAverageSteps()));
+		overheadLabel.setText(NUMBER_FORMAT.format(stats.getAverageOverhead()));
 	}
 //	
 //	// Methods, constructors, fields.
