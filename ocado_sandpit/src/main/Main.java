@@ -30,8 +30,25 @@ public class Main {
 	private static int CYCLE_SLEEP_TIME = 10;
 	
 	static int total_robots = 5000/20*4 ;
+	
 
 	private static StatsPanel sPanel;
+
+	static boolean loop = true;
+	static int iterations = 10000000;
+	static boolean print = true;
+
+	public static void main(String[] args, int robots, int time, int iterations) throws InterruptedException {
+		CYCLE_SLEEP_TIME = time;
+		loop = false;
+		total_robots = robots;
+		Main.iterations = iterations;
+		
+		print = false;
+
+		main(args);
+		getStats();
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		try {
@@ -41,6 +58,8 @@ public class Main {
 			e.printStackTrace();
 		}
 
+		stats = new Statistics();
+		
 		Grid grid = new Grid(total_robots);
 		grid.initGrid();
 
@@ -92,15 +111,19 @@ public class Main {
 
 		int currentCollisions = 0;
 		int currentCompletions = 0;
+		int i = 0;
 		long timer = System.currentTimeMillis();
 
 		Random rand = new Random();
-		while (true) {
+
+		while ( i < iterations | loop) {
+			i++;
 			Thread.sleep(CYCLE_SLEEP_TIME);
 
 			for (Robot r : grid.getGrid()) {
 
 				r.goal = false;
+				r.addStep();
 
 				if (r.blocked) {
 					currentCollisions += 1;
@@ -109,8 +132,12 @@ public class Main {
 					r.currentLocation = r.nextLocation;
 					if (r.currentLocation.equals(r.destination)) {
 						currentCompletions += 1;
+						stats.overhead.add(r.getOverhead());
+						stats.avgSteps.add(r.steps);
 						r.goal = true;
 						r.destination = newDestination(grid, rand);
+						r.cleanSteps();
+						r.calcOptSteps();
 					}
 				}
 
@@ -124,13 +151,17 @@ public class Main {
 
 					final Millisecond now = new Millisecond();
 					throughputChart.getSeries().add(now, stats.getAverageThroughput());
-					System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
-							+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum());
 
 					currentCollisions = 0;
 					currentCompletions = 0;
 					timer = System.currentTimeMillis();
-
+					
+					if (print){
+						System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
+								+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
+								+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
+					}
+					
 					sPanel.updateStats();
 				}
 
@@ -139,6 +170,7 @@ public class Main {
 			strategy.route(grid);
 
 			frame.repaint();
+			
 		}
 	}
 
@@ -146,4 +178,13 @@ public class Main {
 		return new MyPoint(2 + rand.nextInt(grid.getxGridSize() - 4), 2 + rand.nextInt(grid.getyGridSize() - 4));
 	}
 
+	public static  void getStats(){
+		System.out.println("===================================================================");
+		System.out.println("Robots: " + total_robots);
+		System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
+				+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
+				+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
+		
+		System.out.println("===================================================================");
+	}
 }
