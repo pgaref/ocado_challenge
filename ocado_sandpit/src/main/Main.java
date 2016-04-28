@@ -92,6 +92,12 @@ public class Main {
 				gridPanel.setDebugModeActive(((JCheckBox) e.getSource()).isSelected());
 			}
 		});
+		sPanel.addSimpleDestinationCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setSimpleDebugModeActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
 		sPanel.addColoursCheckBoxListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
