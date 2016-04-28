@@ -130,8 +130,8 @@ public class Main {
 					r.currentLocation = r.nextLocation;
 					if (r.currentLocation.equals(r.destination)) {
 						currentCompletions += 1;
-						stats.overhead.add(r.getOverhead());
-						stats.avgSteps.add(r.steps);
+						stats.getOverhead().add(r.getOverhead());
+						stats.getAvgSteps().add(r.steps);
 						r.goal = true;
 						r.destination = newDestination(grid, rand);
 						r.cleanSteps();
