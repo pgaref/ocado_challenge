@@ -1,0 +1,25 @@
+set terminal postscript eps enhanced color font 'Helvetica,16'
+set datafile separator ","
+set autoscale fix
+set key outside right center
+
+set title "Robots Density"
+
+set xlabel "Robots"
+set ylabel "#"
+#set y2label "ops/sec"
+
+
+#set ytics nomirror
+#set y2tics
+# axes x1y2 
+
+set logscale y
+plot[0:] "data.cvs" using 1:($2) title 'Throughput' with lines , \
+     "data.cvs" using 1:($3) title 'Collision' with lines, \
+     "data.cvs" using 1:($4) title 'Overhead' with lines
+     
+     
+unset y2label
+unset logscale y
+
