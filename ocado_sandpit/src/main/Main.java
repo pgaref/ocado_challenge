@@ -26,10 +26,13 @@ import view.TimeSeriesChart;
 public class Main {
 
 	static int PANEL_COUNT = 2;
-	public static Statistics stats ;
-	static int CYCLE_SLEEP_TIME = 200;
+	static Statistics stats = new Statistics();
+	private static int CYCLE_SLEEP_TIME = 10;
+	
+	static int total_robots;
+	static double robot_density = 1.0 / 20;
+	
 
-	static int total_robots = 5000 / 20;
 	private static StatsPanel sPanel;
 
 	static boolean loop = true;
@@ -58,7 +61,7 @@ public class Main {
 
 		stats = new Statistics();
 		
-		Grid grid = new Grid(total_robots);
+		Grid grid = new Grid(robot_density);
 		grid.initGrid();
 
 		IRoutingStrategy strategy = new TorusRouting2();
@@ -88,6 +91,12 @@ public class Main {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gridPanel.setDebugModeActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
+		sPanel.addSimpleDestinationCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setSimpleDebugModeActive(((JCheckBox) e.getSource()).isSelected());
 			}
 		});
 		sPanel.addColoursCheckBoxListener(new ActionListener() {

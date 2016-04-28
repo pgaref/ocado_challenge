@@ -35,6 +35,7 @@ public class StatsPanel extends JPanel {
 	private JLabel avgStepsLabel;
 	private JLabel overheadLabel;
 	private JCheckBox destinationCheckBox;
+	private JCheckBox simpleDestinationCheckBox;
 	private JCheckBox coloursCheckBox;
 
 	public StatsPanel(Statistics s) {
@@ -65,6 +66,15 @@ public class StatsPanel extends JPanel {
 		gbc.gridwidth = 2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		add(destinationCheckBox, gbc);
+
+		simpleDestinationCheckBox = new JCheckBox("Show A Destination");
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.gridx = 0;
+		gbc.gridy = currentY++;
+		gbc.gridwidth = 2;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(simpleDestinationCheckBox, gbc);
 
 		coloursCheckBox = new JCheckBox("Show Colours");
 		gbc.gridx = 0;
@@ -154,6 +164,10 @@ public class StatsPanel extends JPanel {
 
 	public void addDestinationCheckBoxListener(ActionListener al) {
 		destinationCheckBox.addActionListener(al);
+	}
+	
+	public void addSimpleDestinationCheckBoxListener(ActionListener al) {
+		simpleDestinationCheckBox.addActionListener(al);
 	}
 	
 public void addColoursCheckBoxListener(ActionListener al) {

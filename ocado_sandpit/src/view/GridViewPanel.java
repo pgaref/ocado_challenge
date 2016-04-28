@@ -16,6 +16,7 @@ public class GridViewPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Grid grid;
+	private boolean simpleDebugModeActive = false;
 	private boolean debugModeActive = false;
 	private boolean coloursActive = false;
 	
@@ -53,7 +54,9 @@ public class GridViewPanel extends JPanel {
 					0 + i * grid.getGridResolution());
 		}
 
+		boolean first = true;
 		for (Robot o : grid.getGrid()) {
+
 			
 			if (o.blocked)
 				g.setColor(Color.red);
@@ -66,7 +69,7 @@ public class GridViewPanel extends JPanel {
 			
 			
 			
-			if (debugModeActive) {
+			if (debugModeActive || (simpleDebugModeActive&&first)) {
 				if (o.debugColour != null)
 					g.setColor(o.debugColour);
 			}
@@ -76,11 +79,13 @@ public class GridViewPanel extends JPanel {
 					o.currentLocation.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1,
 					grid.getGridResolution() - 1);
 			
-			if (debugModeActive) {
+			if (debugModeActive || (simpleDebugModeActive&&first)) {
 				g.setColor(Color.MAGENTA);
 				g.drawLine(o.currentLocation.x * grid.getGridResolution(),o.currentLocation.y * grid.getGridResolution(),o.destination.x * grid.getGridResolution(),o.destination.y * grid.getGridResolution());
 				g.fillRect(o.destination.x * grid.getGridResolution() + 1, o.destination.y * grid.getGridResolution() + 1, grid.getGridResolution() - 1, grid.getGridResolution() - 1);
 			}
+			
+			first = false;
 		}
 		
 		
@@ -93,6 +98,14 @@ public class GridViewPanel extends JPanel {
 
 	public void setDebugModeActive(boolean debugModeActive) {
 		this.debugModeActive = debugModeActive;
+	}
+
+	public boolean isSimpleDebugModeActive() {
+		return simpleDebugModeActive;
+	}
+
+	public void setSimpleDebugModeActive(boolean simpleDebugModeActive) {
+		this.simpleDebugModeActive = simpleDebugModeActive;
 	}
 
 	public boolean isColoursActive() {
