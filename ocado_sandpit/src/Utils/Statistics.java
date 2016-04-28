@@ -51,16 +51,16 @@ public class Statistics {
 	/**
 	 * @return the throughput
 	 */
-	public Double getAverageThroughput() {
-		return this.average(this.completions);
+	public Integer getAverageThroughput() {
+		return this.average(this.completions).intValue();
 	}
 	
-	public Double getCompletionSum(){
-		return this.sum(this.completions);
+	public Integer getCompletionSum(){
+		return this.sum(this.completions).intValue();
 	}
 	
-	public Double getCollistionSum(){
-		return this.sum(this.collisions);
+	public Integer getCollistionSum(){
+		return this.sum(this.collisions).intValue();
 	}
 
 	private Double sum(List<Integer> values){
