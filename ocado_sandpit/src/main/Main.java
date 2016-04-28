@@ -26,27 +26,19 @@ import view.TimeSeriesChart;
 public class Main {
 
 	static int PANEL_COUNT = 2;
-	public static Statistics stats ;
-	static int CYCLE_SLEEP_TIME = 200;
-
-	static int total_robots = 5000 / 20;
+	static Statistics stats = new Statistics();
+	private static int CYCLE_SLEEP_TIME = 10;
+	
+	/** Ocado default density: 1.0/20 **/
+	static double robot_density = 1.0 / 20;
+	
 	private static StatsPanel sPanel;
 
 	static boolean loop = true;
 	static int iterations = 10000000;
 	static boolean print = true;
-
-	public static void main(String[] args, int robots, int time, int iterations) throws InterruptedException {
-		CYCLE_SLEEP_TIME = time;
-		loop = false;
-		total_robots = robots;
-		Main.iterations = iterations;
-		
-		print = false;
-
-		main(args);
-		getStats();
-	}
+	static Grid grid = null;
+	
 
 	public static void main(String[] args) throws InterruptedException {
 		try {
@@ -57,12 +49,10 @@ public class Main {
 		}
 
 		stats = new Statistics();
-		
-		Grid grid = new Grid(total_robots);
-		grid.initGrid();
+		grid = new Grid(robot_density); grid.initGrid();
 
 		IRoutingStrategy strategy = new TorusRouting2();
-
+		
 		JFrame frame = new JFrame();
 		frame.setTitle("Ocado Challenge - Sandpit 2016");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,6 +78,12 @@ public class Main {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gridPanel.setDebugModeActive(((JCheckBox) e.getSource()).isSelected());
+			}
+		});
+		sPanel.addSimpleDestinationCheckBoxListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.setSimpleDebugModeActive(((JCheckBox) e.getSource()).isSelected());
 			}
 		});
 		sPanel.addColoursCheckBoxListener(new ActionListener() {
@@ -130,8 +126,8 @@ public class Main {
 					r.currentLocation = r.nextLocation;
 					if (r.currentLocation.equals(r.destination)) {
 						currentCompletions += 1;
-						stats.overhead.add(r.getOverhead());
-						stats.avgSteps.add(r.steps);
+						stats.getOverhead().add(r.getOverhead());
+						stats.getAvgSteps().add(r.steps);
 						r.goal = true;
 						r.destination = newDestination(grid, rand);
 						r.cleanSteps();
@@ -171,6 +167,25 @@ public class Main {
 			
 		}
 	}
+	/**
+	 * 
+	 * Method Only used to Collect Stats!
+	 * 
+	 * @param args
+	 * @param robots
+	 * @param time
+	 * @param iterations
+	 * @throws InterruptedException
+	 */
+	public static void stats_collect(String[] args, int robots, int time, int iterations) throws InterruptedException {
+		CYCLE_SLEEP_TIME = time;
+		loop = false;
+		Main.iterations = iterations;
+		print = false;
+		main(args);
+		getStats();
+	}
+	
 
 	private static MyPoint newDestination(Grid grid, Random rand) {
 		return new MyPoint(2 + rand.nextInt(grid.getxGridSize() - 4), 2 + rand.nextInt(grid.getyGridSize() - 4));
@@ -178,7 +193,7 @@ public class Main {
 
 	public static  void getStats(){
 		System.out.println("===================================================================");
-		System.out.println("Robots: " + total_robots);
+		System.out.println("Robots: " + grid.getNum_robots() );
 		System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
 				+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
 				+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
