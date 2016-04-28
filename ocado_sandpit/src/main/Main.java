@@ -30,6 +30,8 @@ public class Main {
 	private static int CYCLE_SLEEP_TIME = 10;
 	
 	static int total_robots;
+	
+	/** Ocado default density: 1.0/20 **/
 	static double robot_density = 1.0 / 20;
 	
 
@@ -38,18 +40,6 @@ public class Main {
 	static boolean loop = true;
 	static int iterations = 10000000;
 	static boolean print = true;
-
-	public static void main(String[] args, int robots, int time, int iterations) throws InterruptedException {
-		CYCLE_SLEEP_TIME = time;
-		loop = false;
-		total_robots = robots;
-		Main.iterations = iterations;
-		
-		print = false;
-
-		main(args);
-		getStats();
-	}
 
 	public static void main(String[] args) throws InterruptedException {
 		try {
@@ -180,6 +170,28 @@ public class Main {
 			
 		}
 	}
+	/**
+	 * 
+	 * Method Only used to Collect Stats!
+	 * 
+	 * @param args
+	 * @param robots
+	 * @param time
+	 * @param iterations
+	 * @throws InterruptedException
+	 */
+	public static void stats_collect(String[] args, int robots, int time, int iterations) throws InterruptedException {
+		CYCLE_SLEEP_TIME = time;
+		loop = false;
+		total_robots = robots;
+		Main.iterations = iterations;
+		
+		print = false;
+
+		main(args);
+		getStats();
+	}
+	
 
 	private static MyPoint newDestination(Grid grid, Random rand) {
 		return new MyPoint(2 + rand.nextInt(grid.getxGridSize() - 4), 2 + rand.nextInt(grid.getyGridSize() - 4));
