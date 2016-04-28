@@ -112,7 +112,9 @@ public class Main {
 
 		while ( i < iterations | loop) {
 			i++;
-			Thread.sleep(CYCLE_SLEEP_TIME);
+			
+			if(CYCLE_SLEEP_TIME != 1)
+				Thread.sleep(CYCLE_SLEEP_TIME);
 
 			for (Robot r : grid.getGrid()) {
 
@@ -192,12 +194,17 @@ public class Main {
 	}
 
 	public static  void getStats(){
-		System.out.println("===================================================================");
-		System.out.println("Robots: " + grid.getNum_robots() );
-		System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
-				+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
-				+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
+//		System.out.println("===================================================================");
+//		System.out.println("Robots: " + grid.getNum_robots() );
+//		System.out.println("Avg Thr: " + stats.getAverageThroughput() + " Completions: "
+//				+ stats.getCompletionSum() + " Collisions: " + stats.getCollistionSum() + " Overhead: "
+//				+ stats.getAverageOverhead() + " Avg Steps: " + stats.getAverageSteps());
+//		
+//		System.out.println("===================================================================");
 		
-		System.out.println("===================================================================");
+
+		System.out.println( grid.getNum_robots() + "," + stats.getAverageThroughput() + ","
+				+ stats.getCompletionSum() + "," + stats.getCollistionSum() + ","
+				+ stats.getAverageOverhead() + "," + stats.getAverageSteps());
 	}
 }
