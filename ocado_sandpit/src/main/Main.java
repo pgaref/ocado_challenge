@@ -29,7 +29,8 @@ public class Main {
 	static Statistics stats = new Statistics();
 	private static int CYCLE_SLEEP_TIME = 10;
 	
-	static int total_robots = 5000/20*4 ;
+	static int total_robots;
+	static double robot_density = 1.0 / 20;
 	
 
 	private static StatsPanel sPanel;
@@ -60,7 +61,7 @@ public class Main {
 
 		stats = new Statistics();
 		
-		Grid grid = new Grid(total_robots);
+		Grid grid = new Grid(robot_density);
 		grid.initGrid();
 
 		IRoutingStrategy strategy = new TorusRouting2();
