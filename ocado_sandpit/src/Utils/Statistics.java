@@ -8,14 +8,12 @@ public class Statistics {
 	/**
 	 * 
 	 */
-	public ArrayList<Integer> collisions;
-	public ArrayList<Integer> completions;
-	public ArrayList<Integer> overhead;
-	public ArrayList<Integer> avgSteps;
-	private long startTime;
+	private ArrayList<Integer> collisions;
+	private ArrayList<Integer> completions;
+	private ArrayList<Integer> overhead;
+	private ArrayList<Integer> avgSteps;
 
 	public Statistics() {
-		startTime = System.currentTimeMillis();
 		collisions = new ArrayList<Integer>();
 		completions = new ArrayList<Integer>();
 		overhead = new ArrayList<Integer>();
@@ -64,6 +62,20 @@ public class Statistics {
 	 */
 	public double getAverageOverhead() {
 		return this.average(this.overhead);
+	}
+	
+	/**
+	 * @return the overhead
+	 */
+	public ArrayList<Integer> getOverhead() {
+		return overhead;
+	}
+	
+	/**
+	 * @return the avgSteps
+	 */
+	public ArrayList<Integer> getAvgSteps() {
+		return avgSteps;
 	}
 	
 	public double getAverageSteps() {

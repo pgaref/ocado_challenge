@@ -35,6 +35,9 @@ public class Robot {
 		steps++;
 	}
 
+	/**
+	 * Manhattan Metric
+	 */
 	public void calcOptSteps(){
 		optimalSteps =  Math.abs(currentLocation.x - destination.x) +  Math.abs(currentLocation.y - destination.y) ;
 	}

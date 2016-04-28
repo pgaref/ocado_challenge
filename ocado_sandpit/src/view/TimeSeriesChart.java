@@ -52,6 +52,12 @@ public class TimeSeriesChart extends JPanel{
         final JPanel content = new JPanel(new BorderLayout());
         final ChartPanel chartPanel = new ChartPanel(chart);
         content.add(chartPanel);
+        
+        chartPanel.setMaximumDrawWidth(Integer.MAX_VALUE);
+        chartPanel.setMaximumDrawHeight(Integer.MAX_VALUE);
+        chartPanel.setMinimumDrawWidth(0);
+        chartPanel.setMinimumDrawHeight(0);
+        
         //Sets the size of whole window (JPanel)
         chartPanel.setPreferredSize(new Dimension(width, height));
         return content;
