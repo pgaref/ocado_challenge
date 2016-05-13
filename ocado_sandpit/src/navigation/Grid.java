@@ -11,7 +11,7 @@ public class Grid {
 	 * Default Ocado size: 200 * 100
 	 */
 	private int xGridSize = 100*2;
-	private int yGridSize = 50*2;
+	private int yGridSize = 80;
 	private int gridResolution = 12/2;
 	private int num_robots;
 	private ArrayList<Robot> grid = new ArrayList<Robot>();

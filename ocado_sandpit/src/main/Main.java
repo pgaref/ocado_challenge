@@ -27,10 +27,10 @@ public class Main {
 
 	static int PANEL_COUNT = 2;
 	static Statistics stats = new Statistics();
-	private static int CYCLE_SLEEP_TIME = 10;
+	private static int CYCLE_SLEEP_TIME = 100;
 	
 	/** Ocado default density: 1.0/20 **/
-	static double robot_density = 1.0 / 20;
+	static double robot_density = 1.0 / 10;
 	
 	private static StatsPanel sPanel;
 
